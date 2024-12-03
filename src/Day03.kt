@@ -8,16 +8,17 @@ fun main() {
     val doNotPattern = Regex("""don't\(\)""")
     fun part2(input: List<String>): Int {
         var enabled = true
-        return input.sumOf { row ->
-            row.indices.sumOf inner@{ index ->
+        var result = 0
+        input.forEach { row ->
+            row.indices.forEach { index ->
                 if (enabled && mulPattern.matchesAt(row, index)) {
-                    return@inner mulPattern.find(row, index)!!.mul()
+                    result += mulPattern.find(row, index)!!.mul()
                 }
                 if (doPattern.matchesAt(row, index)) enabled = true
                 if (doNotPattern.matchesAt(row, index)) enabled = false
-                0
             }
         }
+        return result
     }
 
     check(part1(readInput("Day03_test")) == 161)
