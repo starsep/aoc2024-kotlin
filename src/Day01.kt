@@ -1,3 +1,5 @@
+import kotlin.math.abs
+
 fun main() {
     fun part1(input: List<String>): Int {
         val left = mutableListOf<Int>()
@@ -7,8 +9,8 @@ fun main() {
             left.add(parts[0].toInt())
             right.add(parts[1].toInt())
         }
-        return left.sorted().zip(right.sorted()).sumBy { (a, b) ->
-            Math.abs(a - b)
+        return left.sorted().zip(right.sorted()).sumOf { (a, b) ->
+            abs(a - b)
         }
     }
 
@@ -24,7 +26,7 @@ fun main() {
             }
             countsB[b] = countsB.getOrDefault(b, 0) + 1
         }
-        return left.sumBy {
+        return left.sumOf {
             it * (countsB.getOrDefault(it, 0))
         }
     }
