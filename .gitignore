@@ -1,5 +1,7 @@
 .idea
 .kotlin/
+.gradle
+gradlew.bat
 build
 src/**/*.txt
 local.properties
