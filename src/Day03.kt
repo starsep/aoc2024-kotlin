@@ -1,11 +1,15 @@
 fun main() {
     val mulPattern = Regex("""mul\((\d{1,3}),(\d{1,3})\)""")
+
     fun MatchResult.mul(): Int = groups[1]!!.value.toInt() * groups[2]!!.value.toInt()
-    fun part1(input: List<String>): Int = input.sumOf { row ->
-        mulPattern.findAll(row).sumOf(MatchResult::mul)
-    }
+
+    fun part1(input: List<String>): Int =
+        input.sumOf { row ->
+            mulPattern.findAll(row).sumOf(MatchResult::mul)
+        }
     val doPattern = Regex("""do\(\)""")
     val doNotPattern = Regex("""don't\(\)""")
+
     fun part2(input: List<String>): Int {
         var enabled = true
         var result = 0

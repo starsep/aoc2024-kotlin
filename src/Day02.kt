@@ -30,14 +30,16 @@ fun main() {
         val ascending = zipWithNext().count { (x, y) -> x < y }
         val decreasing = zipWithNext().count { (x, y) -> x > y }
         if (ascending > decreasing) {
-            val index = indices.drop(1).firstOrNull { i ->
-                this[i - 1] >= this[i]
-            } ?: return false
+            val index =
+                indices.drop(1).firstOrNull { i ->
+                    this[i - 1] >= this[i]
+                } ?: return false
             return withoutIndex(index - 1).checkRow()
         } else {
-            val index = indices.drop(1).firstOrNull { i ->
-                this[i - 1] <= this[i]
-            } ?: return false
+            val index =
+                indices.drop(1).firstOrNull { i ->
+                    this[i - 1] <= this[i]
+                } ?: return false
             return withoutIndex(index - 1).checkRow()
         }
     }
