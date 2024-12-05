@@ -2,8 +2,8 @@
 pre-commit:
   parallel: true
   commands:
-    ktlint:
-      run: ktlint -F
+    ktfmt:
+      run: ktfmt src
       stage_fixed: true
 
 skip_output:
