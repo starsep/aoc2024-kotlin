@@ -1,3 +1,5 @@
+import kotlin.test.assertEquals
+
 fun main() {
   fun part1(input: List<String>): Int {
     val word = "XMAS"
@@ -29,8 +31,8 @@ fun main() {
       }
 
   val testInput = readInput("Day04_test")
-  check(part1(testInput) == 18)
-  check(part2(testInput) == 9)
+  assertEquals(actual = part1(testInput), expected = 18)
+  assertEquals(actual = part2(testInput), expected = 9)
 
   val input = readInput("Day04")
   part1(input).println()

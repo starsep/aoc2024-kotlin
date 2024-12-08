@@ -1,4 +1,5 @@
 import kotlin.math.abs
+import kotlin.test.assertEquals
 
 fun main() {
   fun String.parse(): List<Int> = split(" ").map(String::toInt)
@@ -41,8 +42,8 @@ fun main() {
   fun part2(input: List<String>): Int = input.map(String::parse).count(List<Int>::checkPart2)
 
   val testInput = readInput("Day02_test")
-  check(part1(testInput) == 2)
-  check(part2(testInput) == 4)
+  assertEquals(actual = part1(testInput), expected = 2)
+  assertEquals(actual = part2(testInput), expected = 4)
 
   val input = readInput("Day02")
   part1(input).println()

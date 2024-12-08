@@ -1,4 +1,5 @@
 import kotlin.math.abs
+import kotlin.test.assertEquals
 
 fun main() {
   fun part1(input: List<String>): Int {
@@ -28,8 +29,8 @@ fun main() {
   }
 
   val testInput = readInput("Day01_test")
-  check(part1(testInput) == 11)
-  check(part2(testInput) == 31)
+  assertEquals(actual = part1(testInput), expected = 11)
+  assertEquals(actual = part2(testInput), expected = 31)
 
   // Read the input from the `src/Day01.txt` file.
   val input = readInput("Day01")

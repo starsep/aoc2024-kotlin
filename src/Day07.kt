@@ -1,3 +1,5 @@
+import kotlin.test.assertEquals
+
 fun main() {
   fun ULong.concat(other: ULong): ULong = (toString() + other.toString()).toULong()
 
@@ -27,8 +29,8 @@ fun main() {
   fun part2(input: List<String>) = solve(input, concat = true)
 
   val testInput = readInput("Day07_test")
-  check(part1(testInput) == 3749UL)
-  check(part2(testInput) == 11387UL)
+  assertEquals(actual = part1(testInput), expected = 3749UL)
+  assertEquals(actual = part2(testInput), expected = 11387UL)
 
   val input = readInput("Day07")
   part1(input).println()

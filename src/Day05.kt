@@ -1,3 +1,5 @@
+import kotlin.test.assertEquals
+
 const val MAX = 100
 
 fun main() {
@@ -32,8 +34,8 @@ fun main() {
   }
 
   val testInput = readInput("Day05_test")
-  check(part1(testInput) == 143)
-  check(part2(testInput) == 123)
+  assertEquals(actual = part1(testInput), expected = 143)
+  assertEquals(actual = part2(testInput), expected = 123)
 
   val input = readInput("Day05")
   part1(input).println()

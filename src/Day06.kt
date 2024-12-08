@@ -1,3 +1,5 @@
+import kotlin.test.assertEquals
+
 val directions =
     mapOf("up" to (-1 to 0), "right" to (0 to 1), "down" to (1 to 0), "left" to (0 to -1))
 val turn = mapOf("up" to "right", "right" to "down", "down" to "left", "left" to "up")
@@ -97,8 +99,8 @@ fun part2(input: List<String>): Int {
 
 fun main() {
   val testInput = readInput("Day06_test")
-  check(part1(testInput) == 41)
-  check(part2(testInput) == 6)
+  assertEquals(actual = part1(testInput), expected = 41)
+  assertEquals(actual = part2(testInput), expected = 6)
 
   val input = readInput("Day06")
   part1(input).println()

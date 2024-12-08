@@ -1,3 +1,5 @@
+import kotlin.test.assertEquals
+
 fun main() {
   val mulPattern = Regex("""mul\((\d{1,3}),(\d{1,3})\)""")
 
@@ -23,8 +25,8 @@ fun main() {
     return result
   }
 
-  check(part1(readInput("Day03_test")) == 161)
-  check(part2(readInput("Day03_test2")) == 48)
+  assertEquals(actual = part1(readInput("Day03_test")), expected = 161)
+  assertEquals(actual = part2(readInput("Day03_test2")), expected = 48)
 
   val input = readInput("Day03")
   part1(input).println()
