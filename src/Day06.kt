@@ -76,28 +76,28 @@ fun solve(state: State): Int {
   return result
 }
 
-fun part1(input: List<String>): Int {
-  return solve(parseInput(input))
-}
-
-fun part2(input: List<String>): Int {
-  val state = parseInput(input)
-  solve(state)
-  val potentialObstructions =
-      state.board.withIndex().flatMap { (y, row) ->
-        row.indices
-            .filter { x -> state.board[y][x] == 'X' && y to x != state.position }
-            .map { x -> y to x }
-      }
-  return potentialObstructions.count { (y, x) ->
-    state.board[y][x] = 'O'
-    val result = solve(state) == Looping
-    state.board[y][x] = 'X'
-    return@count result
-  }
-}
-
 fun main() {
+  fun part1(input: List<String>): Int {
+    return solve(parseInput(input))
+  }
+
+  fun part2(input: List<String>): Int {
+    val state = parseInput(input)
+    solve(state)
+    val potentialObstructions =
+        state.board.withIndex().flatMap { (y, row) ->
+          row.indices
+              .filter { x -> state.board[y][x] == 'X' && y to x != state.position }
+              .map { x -> y to x }
+        }
+    return potentialObstructions.count { (y, x) ->
+      state.board[y][x] = 'O'
+      val result = solve(state) == Looping
+      state.board[y][x] = 'X'
+      return@count result
+    }
+  }
+
   val testInput = readInput("Day06_test")
   assertEquals(actual = part1(testInput), expected = 41)
   assertEquals(actual = part2(testInput), expected = 6)
