@@ -1,33 +1,29 @@
 import kotlin.test.assertEquals
 
-typealias XY = Pair<Long, Long>
+data class XY(val x: Long, val y: Long)
 
-fun XY.x() = first
-
-fun XY.y() = second
-
-fun XY.det(other: XY) = x() * other.y() - y() * other.x()
+fun XY.det(other: XY) = x * other.y - y * other.x
 
 fun main() {
   data class Machine(val a: XY, val b: XY, val prize: XY)
   fun parseInput(input: List<String>, addPrize: Long): List<Machine> {
     val result = mutableListOf<Machine>()
-    var a: XY = 0L to 0L
-    var b: XY = 0L to 0L
+    var a = XY(0L, 0L)
+    var b = XY(0L, 0L)
     var prize: XY
     input.forEach { row ->
       if (row.startsWith("Button A")) {
         val x = row.split("X")[1].split(",").first().toLong()
         val y = row.split("Y").last().toLong()
-        a = x to y
+        a = XY(x, y)
       } else if (row.startsWith("Button B")) {
         val x = row.split("X")[1].split(",").first().toLong()
         val y = row.split("Y").last().toLong()
-        b = x to y
+        b = XY(x, y)
       } else if (row.startsWith("Prize")) {
         val x = row.split("=")[1].split(",").first().toLong()
         val y = row.split("=").last().toLong()
-        prize = (x + addPrize) to (y + addPrize)
+        prize = XY(x + addPrize, y + addPrize)
         result.add(Machine(a = a, b = b, prize = prize))
       }
     }

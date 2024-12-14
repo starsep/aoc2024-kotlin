@@ -1,12 +1,12 @@
 import kotlin.test.assertEquals
 
 val directions =
-    mapOf("up" to (-1 to 0), "right" to (0 to 1), "down" to (1 to 0), "left" to (0 to -1))
+    mapOf("up" to YX(-1, 0), "right" to YX(0, 1), "down" to YX(1, 0), "left" to YX(0, -1))
 val turn = mapOf("up" to "right", "right" to "down", "down" to "left", "left" to "up")
 
 data class State(
     val board: List<CharArray>,
-    val position: Pair<Int, Int>,
+    val position: YX,
     val direction: String,
 ) {
   fun debugBoard() {
@@ -18,11 +18,11 @@ data class State(
   }
 }
 
-fun List<CharArray>.findPosition(): Pair<Int, Int> {
+fun List<CharArray>.findPosition(): YX {
   for (y in indices) {
     for (x in this[y].indices) {
       if (this[y][x] == '^') {
-        return y to x
+        return YX(y, x)
       }
     }
   }
@@ -35,16 +35,9 @@ fun parseInput(input: List<String>): State {
   return State(board = board, position = position, direction = "up")
 }
 
-fun Pair<Int, Int>.x() = second
+fun YX.nextPosition(direction: String): YX = this + directions[direction]!!
 
-fun Pair<Int, Int>.y() = first
-
-fun Pair<Int, Int>.nextPosition(direction: String): Pair<Int, Int> {
-  val (dy, dx) = directions[direction]!!
-  return (y() + dy) to (x() + dx)
-}
-
-fun Pair<Int, Int>.valid(board: List<CharArray>) = y() in board.indices && x() in board[0].indices
+fun YX.valid(board: List<CharArray>) = y in board.indices && x in board[0].indices
 
 const val Looping = -1
 
@@ -56,17 +49,17 @@ fun solve(state: State): Int {
   data class VisitedKey(val y: Int, val x: Int, val direction: String)
   val visited = mutableSetOf<VisitedKey>()
   while (position.valid(board)) {
-    val visitedKey = VisitedKey(position.y(), position.x(), direction)
+    val visitedKey = VisitedKey(position.y, position.x, direction)
     if (visitedKey in visited) return Looping
     visited.add(visitedKey)
-    if (board[position.y()][position.x()] != 'X') {
+    if (board[position.y][position.x] != 'X') {
       result++
-      board[position.y()][position.x()] = 'X'
+      board[position.y][position.x] = 'X'
     }
     for (i in directions.keys) {
       val potentialPosition = position.nextPosition(direction)
       if (!potentialPosition.valid(board)) return result
-      if (board[potentialPosition.y()][potentialPosition.x()] !in setOf('#', 'O')) {
+      if (board[potentialPosition.y][potentialPosition.x] !in setOf('#', 'O')) {
         position = potentialPosition
         break
       }
@@ -87,7 +80,7 @@ fun main() {
     val potentialObstructions =
         state.board.withIndex().flatMap { (y, row) ->
           row.indices
-              .filter { x -> state.board[y][x] == 'X' && y to x != state.position }
+              .filter { x -> state.board[y][x] == 'X' && YX(y, x) != state.position }
               .map { x -> y to x }
         }
     return potentialObstructions.count { (y, x) ->

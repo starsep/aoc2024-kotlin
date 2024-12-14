@@ -3,3 +3,10 @@ product: jvm/app
 dependencies:
   - org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0
   - org.jetbrains.kotlin:kotlin-test:1.9.24
+  - com.jakewharton.mosaic:mosaic-runtime:0.14.0
+  - $compose.desktop.currentOs
+
+settings:
+  compose: enabled
+  jvm:
+    mainClass: Day14Kt

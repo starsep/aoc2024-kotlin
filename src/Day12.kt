@@ -1,15 +1,11 @@
 import kotlin.test.assertEquals
 
-typealias YX = Pair<Int, Int>
+fun Board.valid(yx: YX) = yx.y in indices && yx.x in this[0].indices
 
-operator fun YX.plus(other: YX) = (first + other.first) to (second + other.second)
-
-fun Board.valid(yx: YX) = yx.first in indices && yx.second in this[0].indices
-
-operator fun Board.get(yx: YX) = this[yx.first][yx.second]
+operator fun Board.get(yx: YX) = this[yx.y][yx.x]
 
 fun main() {
-  val directions = listOf(-1 to 0, 0 to -1, 0 to 1, 1 to 0)
+  val directions = listOf(YX(-1, 0), YX(0, -1), YX(0, 1), YX(1, 0))
   fun sides(perimeters: Set<Pair<YX, YX>>): Int {
     val visited = mutableSetOf<Pair<YX, YX>>()
     var result = 0
@@ -63,7 +59,7 @@ fun main() {
     return board.indices.sumOf { mainY ->
       board[mainY]
           .indices
-          .map { mainY to it }
+          .map { YX(mainY, it) }
           .sumOf { point -> process(point, board, visited, discount) }
     }
   }

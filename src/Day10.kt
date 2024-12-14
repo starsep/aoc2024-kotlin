@@ -1,18 +1,18 @@
 import kotlin.test.assertEquals
 
 fun main() {
-  fun Pair<Int, Int>.valid(data: List<String>) = first in data.indices && second in data[0].indices
+  fun YX.valid(data: List<String>) = y in data.indices && x in data[0].indices
   fun List<String>.value(y: Int, x: Int) = this[y][x].toString().toInt()
   val directions = listOf(0 to -1, 0 to 1, 1 to 0, -1 to 0)
-  fun dfs(data: List<String>, y: Int, x: Int, visited9s: MutableList<Pair<Int, Int>>) {
+  fun dfs(data: List<String>, y: Int, x: Int, visited9s: MutableList<YX>) {
     if (data.value(y, x) == 9) {
-      visited9s.add(y to x)
+      visited9s.add(YX(y, x))
       return
     }
     directions.forEach { (dy, dx) ->
       val ny = y + dy
       val nx = x + dx
-      if ((ny to nx).valid(data) && data.value(y, x) + 1 == data.value(ny, nx)) {
+      if (YX(ny, nx).valid(data) && data.value(y, x) + 1 == data.value(ny, nx)) {
         dfs(data, ny, nx, visited9s)
       }
     }
@@ -23,7 +23,7 @@ fun main() {
     data.indices.forEach { y ->
       data[y].indices.forEach { x ->
         if (data.value(y, x) == 0) {
-          val visited9s = mutableListOf<Pair<Int, Int>>()
+          val visited9s = mutableListOf<YX>()
           dfs(data, y, x, visited9s)
           result += (if (distinct) visited9s.toSet() else visited9s).size
         }
