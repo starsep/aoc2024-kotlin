@@ -29,7 +29,7 @@ fun List<CharArray>.findPosition(): YX {
   throw Exception("Couldn't find start position")
 }
 
-fun parseInput(input: List<String>): State {
+fun parseInputDay6(input: List<String>): State {
   val board = input.map(String::toCharArray)
   val position = board.findPosition()
   return State(board = board, position = position, direction = "up")
@@ -71,11 +71,11 @@ fun solve(state: State): Int {
 
 fun main() {
   fun part1(input: List<String>): Int {
-    return solve(parseInput(input))
+    return solve(parseInputDay6(input))
   }
 
   fun part2(input: List<String>): Int {
-    val state = parseInput(input)
+    val state = parseInputDay6(input)
     solve(state)
     val potentialObstructions =
         state.board.withIndex().flatMap { (y, row) ->
