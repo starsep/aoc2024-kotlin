@@ -1,3 +1,4 @@
+import kotlin.math.abs
 import kotlin.test.assertEquals
 
 fun YX.valid(board: Array<CharArray>) = y in board.indices && x in board[0].indices
@@ -20,24 +21,16 @@ fun main() {
     return Input(board, start, end)
   }
 
-  fun bfs(input: Input, maxDistance: Int, mustVisitFirst: YX, mustVisit: YX): Int? {
+  fun bfs(input: Input): Map<YX, Int> {
     val visited = mutableSetOf<YX>()
     val queue = mutableListOf<Pair<YX, Int>>()
+    val results = mutableMapOf<YX, Int>()
     queue.add(input.start to 0)
-    var best: Int? = null
     while (queue.isNotEmpty()) {
       val (node, distance) = queue.removeFirst()
-      if (distance > maxDistance) return null
       if (node in visited) continue
       visited.add(node)
-      if (node == mustVisit && mustVisitFirst !in visited) return null
-      if (node == input.end) {
-        if (mustVisit in visited) {
-          if (best != null && best < distance) return null
-          return distance
-        }
-        best = distance
-      }
+      results[node] = distance
       directions.forEach { dyx ->
         val nyx = node + dyx
         if (nyx.valid(input.board) && input.board[nyx] != WALL && nyx !in visited) {
@@ -45,45 +38,45 @@ fun main() {
         }
       }
     }
-    return null
+    return results
   }
 
-  fun part1(input: Input, minSave: Int): Int {
-    val normalResult = bfs(input, Int.MAX_VALUE, input.start, input.end)!!
-    val maxDistance = normalResult - minSave
+  fun solve(input: Input, minSave: Int, maxCheatLength: Int): Int {
+    val results = bfs(input)
+    val normalDistance = results[input.end]!!
     var result = 0
-    input.board.indices.forEach { y ->
-      input.board[y].indices.forEach { x ->
-        val yx = YX(y, x)
-        if (input.board[yx] == WALL) {
-          input.board[yx] = EMPTY
-          directions.forEach { dyx ->
-            val nyx = yx + dyx
-            if (nyx.valid(input.board)) {
-              // val previous = input.board[nyx]
-              // input.board[nyx] = EMPTY
-              val cheatResult = bfs(input, maxDistance, yx, nyx)
-              if (cheatResult != null) {
-                result++
-                println("$yx, $nyx, $cheatResult")
-              }
-              // input.board[nyx] = previous
-            }
-          }
-          input.board[yx] = WALL
+    val optimalPoints = mutableListOf<YX>()
+    val queue = mutableListOf(input.end)
+    while (queue.isNotEmpty()) {
+      val node = queue.removeFirst()
+      optimalPoints.add(node)
+      directions.forEach { dyx ->
+        val yx = node + dyx
+        if (results[yx] == results[node]!! - 1) {
+          queue.add(yx)
         }
+      }
+    }
+    for (cheatStart in optimalPoints) {
+      for (cheatEnd in optimalPoints) {
+        val distance = abs(cheatStart.y - cheatEnd.y) + abs(cheatStart.x - cheatEnd.x)
+        if (distance > maxCheatLength) continue
+        val cheatResult = results[cheatStart]!! + (normalDistance - results[cheatEnd]!!) + distance
+        val saved = normalDistance - cheatResult
+        if (saved >= minSave) result++
       }
     }
     return result
   }
 
-  fun part2(input: Input): Int = 42
+  fun part1(input: Input, minSave: Int) = solve(input, minSave, maxCheatLength = 2)
+  fun part2(input: Input, minSave: Int) = solve(input, minSave, maxCheatLength = 20)
 
   val testInput = readInput("Day20_test")
-  assertEquals(expected = 5, actual = part1(parseInput(testInput), 20))
-  assertEquals(expected = 42, actual = part2(parseInput(testInput)))
+  assertEquals(expected = 5, actual = part1(parseInput(testInput), minSave = 20))
+  assertEquals(expected = 285, actual = part2(parseInput(testInput), minSave = 50))
 
   val input = readInput("Day20")
   part1(parseInput(input), minSave = 100).println()
-  part2(parseInput(input)).println()
+  part2(parseInput(input), minSave = 100).println()
 }

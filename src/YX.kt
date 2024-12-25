@@ -2,6 +2,8 @@ data class YX(val y: Int, val x: Int)
 
 operator fun YX.plus(other: YX): YX = YX(y = y + other.y, x = x + other.x)
 
+operator fun YX.minus(other: YX): YX = YX(y = y - other.y, x = x - other.x)
+
 operator fun YX.times(q: Int): YX = YX(y = y * q, x = x * q)
 
 fun Int.safeMod(m: Int) = (this % m + m) % m
