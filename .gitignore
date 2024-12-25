@@ -6,3 +6,4 @@ build
 src/**/*.txt
 local.properties
 input/
+Day24.dot
